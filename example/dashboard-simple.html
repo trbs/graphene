@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Dashboard</title>
+      <link rel="stylesheet" href="/build/index.css" type="text/css" media="screen" charset="utf-8">
+      <style type="text/css">
+        #dashboard{
+          text-align:center;
+        }
+      </style>
+    </head>
+		<body>
+
+    <div id="dashboard">
+    </div>
+
+    <script type="text/javascript" src="/vendor/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/build/index.js"></script>
+    <script type="text/javascript">
+	$(function() {
+		var description;
+	  	description = {
+	    "CPU Usage": {
+			// Update target in source based on a metric from graphite.
+			// A sample CPU Usage metric is included here:
+			source: "http://localhost:8080/render?from=-30minutes&until=now&target=carbon.agents.*.cpuUsage&title=cpu_test&format=json",
+		  	refresh_interval: 1000,
+	      	TimeSeries: {
+	      		parent: '#dashboard',
+	        	observer: function(data){
+	        		console.log("Time series observing ", data);
+	        	}
+	      	}
+	    },
+	  };
+
+	  var g = new Graphene;
+	  g.build(description);
+
+	}).call(this);
+</script>
+</body>
+</html>
